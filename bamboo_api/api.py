@@ -26,6 +26,7 @@ class BambooAPIClient(object):
     RESULT_SERVICE = '/rest/api/latest/result'
     SERVER_SERVICE = '/rest/api/latest/server'
     BFL_ACTION = '/build/label/viewBuildsForLabel.action'
+    INFO_SERVICE = '/rest/api/latest/info'
 
     BRANCH_SERVICE = PLAN_SERVICE + '/{key}/branch'
     BRANCH_RESULT_SERVICE = RESULT_SERVICE + '/{key}/branch/{branch_name}'
@@ -281,6 +282,17 @@ class BambooAPIClient(object):
             # Update paging info
             # Note: do this here to keep it current with yields
             qs['start-index'] += branches['max-result']
+
+    def get_server_info(self):
+        """
+        Returns the server info of the Bamboo server.
+        """
+        # Get url
+        url = "{}".format(self._get_url(self.INFO_SERVICE))
+
+        # Get server info response
+        response = self._get_response(url).json()
+        return response
 
     def delete_plan(self, build_key):
         """
